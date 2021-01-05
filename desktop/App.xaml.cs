@@ -32,12 +32,10 @@ namespace desktop_app
 			Console.WriteLine("[INFO] Server address set to {0}", server_addr);
 			wnd.Show();
 
-            var taskWebConnect = Task.Run(() => DoClientWebSocket(server_addr,port));
-
-            taskWebConnect.Wait();
+            DoClientWebSocket(server_addr, port);
         }
 
-        private static async Task DoClientWebSocket(String addr, String port)
+        private static async void DoClientWebSocket(String addr, String port)
         {
             using (ClientWebSocket ws = new ClientWebSocket())
             {
@@ -62,9 +60,9 @@ namespace desktop_app
                     while (true)
                     {
                         ArraySegment<byte> bytesReceived =
-                                  new ArraySegment<byte>(receiveBuffer, offset, dataPerPacket);
+                                    new ArraySegment<byte>(receiveBuffer, offset, dataPerPacket);
                         WebSocketReceiveResult result = await ws.ReceiveAsync(bytesReceived,
-                                                                      source.Token);
+                                                                        source.Token);
                         //Partial data received
                         //Console.WriteLine("Data:{0}", Encoding.UTF8.GetString(receiveBuffer, offset,result.Count));
                         offset += result.Count;
@@ -79,7 +77,7 @@ namespace desktop_app
                     switch (server_prompt)
                     {
                         case "CODE_RESP": // server returns game code
-                            Console.WriteLine("Recieved game code"+server_prompt);
+                            Console.WriteLine("Recieved game code" + server_prompt);
                             break;
                         default:
                             break;
