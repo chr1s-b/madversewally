@@ -100,6 +100,10 @@ namespace desktop_app
                         case "CODE_RESP": // server returns game code
                             this.recieved_code(server_data);
                             break;
+                        case "PLAYERJOIN":
+                            Console.WriteLine("player joined!!!!");
+                            Console.WriteLine(server_data);
+                            break;
                         default:
                             break;
                     }

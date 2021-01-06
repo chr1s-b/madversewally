@@ -6,9 +6,10 @@ let app = require('./express_server.js');
 
 var opengames = require('./games.js');
 
+const port = process.env.PORT || 1337
+
 // Create web socket server on top of a regular http server
 let wss = new WSServer({
-
     server: server
 });
 
@@ -20,16 +21,12 @@ var commands = {
     ["CODE_REQ"]: process_code_req
 }
 
-function poo(conn) {
-    conn.send(JSON.stringify({ answer: 43 }));
-}
-
 function process_code_req(conn) {
     let gamecode = "AAAA";
     console.log("Created new game:", gamecode);
     conn.send("CODE_RESP." + gamecode);
     // add game to opengames
-    opengames[gamecode] = {};
+    opengames[gamecode] = {conn: conn};
 }
 
 wss.on('connection', function connection(ws) {
@@ -45,7 +42,6 @@ wss.on('connection', function connection(ws) {
     });
 });
 
-const port = process.env.PORT || 1337
 server.listen(port, function () {
 
     console.log(`http/ws server listening on ${port}`);
