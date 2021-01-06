@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Button x:Name="connect_button" Content="Connect" HorizontalAlignment="Left" Height="47" Margin="308,188,0,0" VerticalAlignment="Top" Width="150" Click="connect_button_Click"/>
+        <TextBlock x:Name="tbgamecode" HorizontalAlignment="Left" Height="24" Margin="229,108,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="59"/>
+
     </Grid>
 </Window>

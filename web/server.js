@@ -24,7 +24,7 @@ function poo(conn) {
 }
 
 function process_code_req(conn) {
-    conn.send("CODERESPONSE.AAAA");
+    conn.send("CODE_RESP.AAAA");
 }
 
 wss.on('connection', function connection(ws) {
