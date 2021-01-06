@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Open+Sans&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Bungee', cursive;
+    background-color: #21618c;
+}
+
+.title p {
+    font-size: 24px;
+    color: #ffffff;
+    text-align: center;
+}
+
+form {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+    background: #2e86c1;
+    padding: 30px;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.inputs {
+    display: flex;
+}
+
+.inputsection {
+    flex: 1;
+    padding: 2%;
+}
+
+label {
+    display: block;
+}
+
+input {
+    display: block;
+    border: 0;
+    padding: 8px;
+    width: 100%;
+    background: none;
+    border-bottom: solid 2px #5dade2;
+    font-family: 'Bungee', cursive;
+    font-size: 20px;
+}
+
+button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2%;
+    width: 30%;
+    border: 0;
+    padding: 20px;
+    outline: solid 1px #21618c;
+    outline-offset: -1px;
+    background: #5dade2;
+    border-radius: 4px;
+    box-shadow: 0 5px #21618c;
+    font-family: 'Bungee', cursive;
+    font-size: 20px;
+}
