@@ -22,6 +22,11 @@ namespace desktop_app
     /// </summary>
     public partial class MainWindow : Window
     {
+        const int MAIN_MENU = 0;
+        const int LOBBY = 1;
+        int appstatus = MAIN_MENU;
+        String msg;
+
         String server_addr;
         String port;
         public MainWindow(String server_addr, String port)
@@ -43,15 +48,28 @@ namespace desktop_app
                 var source = new CancellationTokenSource();
 
                 await ws.ConnectAsync(serverUri, source.Token);
+                Console.WriteLine("Connected to" + String.Format("ws://{0}:{1}/", addr, port));
+
                 while (ws.State == WebSocketState.Open)
                 {
+                    switch (appstatus)
+                    {
+                        case MAIN_MENU:
+                            msg = "CODE_REQ";
+                            break;
+                        default:
+                            msg = "";
+                            break;
+                    }
 
-                    Console.WriteLine("Connected to" + String.Format("ws://{0}:{1}/", addr, port));
-                    string msg = "CODE_REQ";
-                    ArraySegment<byte> bytesToSend =
+                    if (msg != "")
+                    {
+                        ArraySegment<byte> bytesToSend =
                                 new ArraySegment<byte>(Encoding.UTF8.GetBytes(msg));
-                    await ws.SendAsync(bytesToSend, WebSocketMessageType.Text,
-                                        true, source.Token);
+                        await ws.SendAsync(bytesToSend, WebSocketMessageType.Text,
+                                            true, source.Token);
+                    }
+                    
                     //Receive buffer
                     var receiveBuffer = new byte[128];
                     //Multipacket response
@@ -93,7 +111,10 @@ namespace desktop_app
         {
             Console.WriteLine("Recieved game code" + data);
             this.tbgamecode.Text = data;
+            appstatus = LOBBY;
             // now displayed game code to user
+            // remove connect button
+            this.connect_button.Visibility = Visibility.Collapsed;
         }
 
         private void code_textbox_TextChanged(object sender, TextChangedEventArgs e)
