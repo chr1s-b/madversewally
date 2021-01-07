@@ -37,13 +37,20 @@
     </Content>
     <Content Include="index.html" />
     <Content Include="public\css\style.css" />
+    <Content Include="importpages.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="public\index.html" />
-    <Content Include="public\lobby.html" />
+    <Content Include="pages\lobby.html" />
+    <Content Include="public\frame.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="server.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="pages\" />
     <Folder Include="public\" />
     <Folder Include="public\css\" />
   </ItemGroup>

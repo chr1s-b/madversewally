@@ -4,11 +4,24 @@ let express = require('express');
 let app = express();
 
 var opengames = require('./games.js');
+var pages = require('./importpages.js');
+console.log(pages);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + '/public'));
+
+app.get('/event_updates/', function (req, res) {
+    // establish persistent sse connection
+    res.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive'
+    });
+
+    res.write(`data: ${pages.lobby}\n\n`);
+});
 
 app.get('/', function (req, res) {
     res.sendFile('index.html');
@@ -39,10 +52,23 @@ app.post('/', function (req, res) {
     }
     // enough capacity, so add the player to the game
     room.numplayers += 1;
-    room[playername] = 0; // just store a score TODO add other properties
+    room[playername] = newplayer(res, room.numplayers == 1); // just store a score TODO add other properties
     // tell the host a player has joined
     room.conn.send("PLAYERJOIN." + playername + "&" + room.numplayers.toString());
-    return res.sendFile('lobby.html', { root: 'public' });
+
+    res.sendFile('frame.html', { root: 'public' });
+    //res.end();
+    return;
 });
+
+function newplayer(conn, leader) {
+    // create new player object
+    return {
+        leader: leader,
+        conn: conn,
+        profile: "", // TODO
+        score: 0
+    };
+}
 
 module.exports = app;

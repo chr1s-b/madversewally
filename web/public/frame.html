@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <script>
+  if (!!window.EventSource) {
+    var source = new EventSource("/event_updates")
+
+    source.onmessage = function (e) {
+          document.body.innerHTML = e.data;
+      };
+
+    source.addEventListener('open', function(e) {
+        console.log("connected to sse");
+    }, false)
+
+    source.addEventListener('error', function(e) {
+      if (e.eventPhase == EventSource.CLOSED)
+        source.close()
+      if (e.target.readyState == EventSource.CLOSED) {
+        console.log("disconnected")
+      }
+      else if (e.target.readyState == EventSource.CONNECTING) {
+        console.log("connecting... ... ...")
+      }
+    }, false)
+  } else {
+    console.log("Your browser doesn't support SSE")
+  }
+    </script>
+
+    <meta charset="utf-8" />
+    <title>Madversewally</title>
+</head>
+<body>
+    this is the frame placeholder
+</body>
+</html>
