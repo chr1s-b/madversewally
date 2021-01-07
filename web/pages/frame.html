@@ -5,7 +5,7 @@
 
     <script>
   if (!!window.EventSource) {
-    var source = new EventSource("/event_updates")
+      var source = new EventSource("/event_updates/{{ gamecode }}/{{ name }}")
 
     source.onmessage = function (e) {
           document.body.innerHTML = e.data;

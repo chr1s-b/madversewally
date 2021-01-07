@@ -12,15 +12,19 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + '/public'));
 
-app.get('/event_updates/', function (req, res) {
+app.get('/event_updates/:gamecode/:playername', function (req, res) {
     // establish persistent sse connection
     res.writeHead(200, {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
         'Connection': 'keep-alive'
     });
+    // need to identify player name somehow?
+    if (!req.params.playername) { return res.end("invalid request"); }
+    opengames[req.params.gamecode][req.params.playername].conn = res;
 
     res.write(`data: ${pages.lobby}\n\n`);
+    res.write(`data: hello your name is ${req.params.playername} and you are in ${req.params.gamecode}\n\n`);
 });
 
 app.get('/', function (req, res) {
@@ -56,16 +60,16 @@ app.post('/', function (req, res) {
     // tell the host a player has joined
     room.conn.send("PLAYERJOIN." + playername + "&" + room.numplayers.toString());
 
-    res.sendFile('frame.html', { root: 'public' });
-    //res.end();
-    return;
+    res.set('Content-Type', 'text/html');
+    res.write(`${pages.frame.replace("{{ name }}",playername).replace("{{ gamecode }}",gamecode)}`)
+    return res.end();
 });
 
 function newplayer(conn, leader) {
     // create new player object
     return {
         leader: leader,
-        conn: conn,
+        conn: null, // waits for sse connection
         profile: "", // TODO
         score: 0
     };

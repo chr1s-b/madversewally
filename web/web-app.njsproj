@@ -42,7 +42,7 @@
     </Content>
     <Content Include="public\index.html" />
     <Content Include="pages\lobby.html" />
-    <Content Include="public\frame.html">
+    <Content Include="pages\frame.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="server.js" />
