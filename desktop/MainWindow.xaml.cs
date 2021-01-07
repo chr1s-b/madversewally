@@ -118,7 +118,7 @@ namespace desktop_app
             String[] nameandnumber = data.Split('&');
             Console.WriteLine("player joined!!!!");
             Console.WriteLine(nameandnumber[1]);
-            ((TextBlock)this.players.Children[Int32.Parse(nameandnumber[1])]).Text = nameandnumber[0];
+            ((TextBlock)this.players.Children[Int32.Parse(nameandnumber[1])-1]).Text = nameandnumber[0];
 
         }
 

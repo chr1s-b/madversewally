@@ -25,21 +25,23 @@ app.post('/', function (req, res) {
         return res.end("game doesnt exist");
     }
     // game exists, add player to game
+    var room = opengames[gamecode];
     // check player doesn't already exist
-    if (playername in opengames[gamecode]) {
+    if (playername in room) {
         // player already in, is it the same user?
         // TO DO
         return res.end("player already exists, choose another name");
     }
     // game exists, and a new player name, check capacity...
-    if (Object.keys(opengames[gamecode]).length - 1 + 1 > 8) {
+    if (room.numplayers >= 8) {
         // no capacity
         return res.end("sorry no capacity");
     }
     // enough capacity, so add the player to the game
-    opengames[gamecode][playername] = 0; // just store a score TODO add other properties
+    room.numplayers += 1;
+    room[playername] = 0; // just store a score TODO add other properties
     // tell the host a player has joined
-    opengames[gamecode].conn.send("PLAYERJOIN." + playername + "&" + (Object.keys(opengames[gamecode]).length - 2).toString());
+    room.conn.send("PLAYERJOIN." + playername + "&" + room.numplayers.toString());
     return res.sendFile('lobby.html', { root: 'public' });
 });
 

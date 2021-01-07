@@ -26,7 +26,7 @@ function process_code_req(conn) {
     console.log("Created new game:", gamecode);
     conn.send("CODE_RESP." + gamecode);
     // add game to opengames
-    opengames[gamecode] = {conn: conn};
+    opengames[gamecode] = {conn: conn, numplayers: 0};
 }
 
 wss.on('connection', function connection(ws) {
