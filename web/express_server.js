@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res) {
-    res.sendFile('index.html', { root: 'public' });
+    res.sendFile('index.html');
 });
 
 app.post('/', function (req, res) {
@@ -31,7 +31,12 @@ app.post('/', function (req, res) {
         // TO DO
         return res.end("player already exists, choose another name");
     }
-    // game exists, and a new player name, so add them
+    // game exists, and a new player name, check capacity...
+    if (Object.keys(opengames[gamecode]).length - 1 + 1 > 8) {
+        // no capacity
+        return res.end("sorry no capacity");
+    }
+    // enough capacity, so add the player to the game
     opengames[gamecode][playername] = 0; // just store a score TODO add other properties
     // tell the host a player has joined
     opengames[gamecode].conn.send("PLAYERJOIN." + playername + "&" + (Object.keys(opengames[gamecode]).length - 2).toString());

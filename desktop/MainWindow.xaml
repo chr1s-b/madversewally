@@ -21,6 +21,8 @@
                 <TextBlock x:Name="player4" HorizontalAlignment="Left" Height="22" Margin="663,174,37,0" TextWrapping="NoWrap" Text="4" VerticalAlignment="Top" Width="92"/>
                 <TextBlock x:Name="player5" HorizontalAlignment="Left" Height="22" Margin="663,201,37,0" TextWrapping="NoWrap" Text="5" VerticalAlignment="Top" Width="92"/>
                 <TextBlock x:Name="player6" HorizontalAlignment="Left" Height="22" Margin="663,228,37,0" TextWrapping="NoWrap" Text="6" VerticalAlignment="Top" Width="92"/>
+                <TextBlock x:Name="player7" HorizontalAlignment="Left" Height="22" Margin="663,255,0,0" TextWrapping="NoWrap" Text="7" VerticalAlignment="Top" Width="92"/>
+                <TextBlock x:Name="player8" HorizontalAlignment="Left" Height="22" Margin="663,282,0,0" TextWrapping="NoWrap" Text="8" VerticalAlignment="Top" Width="92"/>
             </Grid>
         </Grid>
     </Grid>
