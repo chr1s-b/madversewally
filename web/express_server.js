@@ -32,9 +32,9 @@ app.post('/', function (req, res) {
         return res.end("player already exists, choose another name");
     }
     // game exists, and a new player name, so add them
-    opengames[gamecode][playername] = 0; // just store a score
+    opengames[gamecode][playername] = 0; // just store a score TODO add other properties
     // tell the host a player has joined
-    opengames[gamecode].conn.send("PLAYERJOIN."+playername);
+    opengames[gamecode].conn.send("PLAYERJOIN." + playername + "&" + (Object.keys(opengames[gamecode]).length - 2).toString());
     return res.sendFile('lobby.html', { root: 'public' });
 });
 

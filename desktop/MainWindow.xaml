@@ -8,7 +8,20 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Button x:Name="connect_button" Content="Connect" HorizontalAlignment="Left" Height="47" Margin="308,188,0,0" VerticalAlignment="Top" Width="150" Click="connect_button_Click"/>
-        <TextBlock x:Name="tbgamecode" HorizontalAlignment="Left" Height="24" Margin="229,108,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="59"/>
+        <Grid x:Name="lobbyelements" Visibility="Collapsed">
+            <TextBlock x:Name="tbgamecode" HorizontalAlignment="Left" Height="24" Margin="696,19,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="59"/>
+            <TextBlock x:Name="tbjoinat" HorizontalAlignment="Left" Height="24" Margin="451,19,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="135"/>
+            <TextBlock x:Name="tbjoinat_label" HorizontalAlignment="Left" Height="24" Margin="409,19,0,0" TextWrapping="Wrap" Text="Join at:" VerticalAlignment="Top" Width="42"/>
+            <TextBlock x:Name="tbgamecode_label" HorizontalAlignment="Left" Height="24" Margin="628,19,0,0" TextWrapping="Wrap" Text="Room code:" VerticalAlignment="Top" Width="68"/>
 
+            <Grid x:Name="players">
+                <TextBlock x:Name="player1" HorizontalAlignment="Left" Height="22" Margin="663,93,37,0" TextWrapping="NoWrap" Text="1" VerticalAlignment="Top" Width="92"/>
+                <TextBlock x:Name="player2" HorizontalAlignment="Left" Height="22" Margin="663,120,37,0" TextWrapping="NoWrap" Text="2" VerticalAlignment="Top" Width="92"/>
+                <TextBlock x:Name="player3" HorizontalAlignment="Left" Height="22" Margin="663,147,37,0" TextWrapping="NoWrap" Text="3" VerticalAlignment="Top" Width="92"/>
+                <TextBlock x:Name="player4" HorizontalAlignment="Left" Height="22" Margin="663,174,37,0" TextWrapping="NoWrap" Text="4" VerticalAlignment="Top" Width="92"/>
+                <TextBlock x:Name="player5" HorizontalAlignment="Left" Height="22" Margin="663,201,37,0" TextWrapping="NoWrap" Text="5" VerticalAlignment="Top" Width="92"/>
+                <TextBlock x:Name="player6" HorizontalAlignment="Left" Height="22" Margin="663,228,37,0" TextWrapping="NoWrap" Text="6" VerticalAlignment="Top" Width="92"/>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

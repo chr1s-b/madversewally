@@ -33,6 +33,7 @@ namespace desktop_app
         {
             this.server_addr = server_addr;
             this.port = port;
+            
             InitializeComponent();
         }
         private void connect_button_Click(object sender, RoutedEventArgs e)
@@ -101,8 +102,8 @@ namespace desktop_app
                             this.recieved_code(server_data);
                             break;
                         case "PLAYERJOIN":
-                            Console.WriteLine("player joined!!!!");
-                            Console.WriteLine(server_data);
+                            // add player
+                            this.addplayer(server_data);
                             break;
                         default:
                             break;
@@ -111,11 +112,22 @@ namespace desktop_app
             }
         }
 
+        private void addplayer(string data)
+        {
+            // display the player in the lobby
+            String[] nameandnumber = data.Split('&');
+            Console.WriteLine("player joined!!!!");
+            Console.WriteLine(nameandnumber[1]);
+            ((TextBlock)this.players.Children[Int32.Parse(nameandnumber[1])]).Text = nameandnumber[0];
+
+        }
+
         private void recieved_code(string data)
         {
             Console.WriteLine("Recieved game code" + data);
             this.tbgamecode.Text = data;
             appstatus = LOBBY;
+            this.lobbyelements.Visibility = Visibility.Visible;
             // now displayed game code to user
             // remove connect button
             this.connect_button.Visibility = Visibility.Collapsed;
