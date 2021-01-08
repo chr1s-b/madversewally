@@ -29,6 +29,16 @@
         </Grid>
         <Grid x:Name="tutorialXAML" Visibility="Collapsed">
             <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="35" Margin="332,122,0,0" TextWrapping="Wrap" Text="Tutorial" VerticalAlignment="Top" Width="97"/>
+            <MediaElement Source="./Resources/samplevideo1.mp4" LoadedBehavior="Manual" Stretch="Fill" Name="tutorialPlayer" />
+        </Grid>
+        <Grid x:Name="introXAML" Visibility="Collapsed">
+            <MediaElement Source="./Resources/samplevideo3.mp4" LoadedBehavior="Manual" Stretch="Fill" Name="introPlayer" />
+        </Grid>
+        <Grid x:Name="writingXAML" Visibility="Collapsed">
+            <TextBlock x:Name="one" HorizontalAlignment="Left" Height="35" Margin="332,122,0,0" TextWrapping="Wrap" Text="writing" VerticalAlignment="Top" Width="97"/>
+        </Grid>
+        <Grid x:Name="rappingXAML" Visibility="Collapsed">
+            <TextBlock x:Name="two" HorizontalAlignment="Left" Height="35" Margin="332,122,0,0" TextWrapping="Wrap" Text="rapping" VerticalAlignment="Top" Width="97"/>
         </Grid>
     </Grid>
 </Window>

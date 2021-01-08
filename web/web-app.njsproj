@@ -32,12 +32,16 @@
     <Content Include="express_server.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="pages\writing1.html" />
+    <Content Include="utils.js" />
     <Content Include="games.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="index.html" />
     <Content Include="pages\leadertutorial.html" />
     <Content Include="pages\leaderlobby.html" />
+    <Content Include="pages\blank.html" />
+    <Content Include="pages\intro.html" />
     <Content Include="pages\tutorial.html" />
     <Content Include="public\css\style.css" />
     <Content Include="importpages.js">

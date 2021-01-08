@@ -1,8 +1,9 @@
 <iframe name="dud" style="display:none;"></iframe> <!-- very useful -->
-<form id="gamestart" method="POST" enctype="application/x-www-form-urlencoded" action="/skiptutorial" target="dud">
+<form id="gamestart" method="POST" enctype="application/x-www-form-urlencoded" action="/gamestart" target="dud">
     <input name="room" type="hidden" value="{{ room }}" />
     <input name="player" type="hidden" value="{{ player }}" />
-    <button id="skipbutton">
-        Skip tutorial.
+    <input name="text" />
+    <button>
+        Submit/
     </button>
 </form>

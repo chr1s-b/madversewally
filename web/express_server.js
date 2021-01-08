@@ -5,7 +5,8 @@ let app = express();
 
 var opengames = require('./games.js');
 var pages = require('./importpages.js');
-console.log(pages);
+var show = require('./utils.js');
+console.log(Object.keys(pages));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -82,8 +83,21 @@ app.post('/gamestart', function (req, res) {
             if (p !== player) { show(pages.tutorial, room, p); }
         });
         // tell host to play tutorial
-        opengames[room].conn.send("TUTORIALSTART")
-        console.log("starting tutorial, closing lobby")
+        opengames[room].conn.send("TUTORIALSTART");
+        console.log("starting tutorial, closing lobby");
+    }
+});
+
+app.post('/skiptutorial', function (req, res) {
+    var room = req.body.room;
+    var player = req.body.player;
+    if (opengames[room].players[player].leader) { // check leader is doing it
+        Object.keys(opengames[room].players).forEach((p) => {
+            // send all players to a blank page
+            show(pages.blank, room, p)
+        });
+        opengames[room].conn.send("TUTORIALSKIP");
+        console.log("skipping tutorial");
     }
 });
 
@@ -96,11 +110,6 @@ function newplayer(conn, leader) {
         profile: "", // TODO
         score: 0
     };
-}
-
-function show(page, room, player) {
-    opengames[room].players[player].conn.write(`data: ${Buffer.from(page.replace("{{ player }}", player).replace("{{ room }}", room)).toString('base64')}\n\n`);
-    return;
 }
 
 module.exports = app;

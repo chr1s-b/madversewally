@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Timers;
+using System.IO;
 
 namespace desktop_app
 {
@@ -25,10 +27,11 @@ namespace desktop_app
         const int MENU = 0;
         const int LOBBY = 1;
         const int TUTORIAL = 2;
-        const int WRITING = 3;
-        const int RAPPING = 4;
-        const int INTER = 5;
-        const int END = 6;
+        const int INTRO = 3;
+        const int WRITING = 4;
+        const int RAPPING = 5;
+        const int INTER = 6;
+        const int END = 7;
         int appstatus = MENU;
         String msg;
 
@@ -43,6 +46,7 @@ namespace desktop_app
         }
         private void connect_button_Click(object sender, RoutedEventArgs e)
         {
+            msg = "CODE_REQ";
             DoClientWebSocket(this.server_addr, this.port);
         }
 
@@ -54,20 +58,10 @@ namespace desktop_app
                 var source = new CancellationTokenSource();
 
                 await ws.ConnectAsync(serverUri, source.Token);
-                Console.WriteLine("Connected to" + String.Format("ws://{0}:{1}/", addr, port));
+                Console.WriteLine("Connected to {0}", serverUri);
 
                 while (ws.State == WebSocketState.Open)
                 {
-                    switch (appstatus)
-                    {
-                        case MENU:
-                            msg = "CODE_REQ";
-                            break;
-                        default:
-                            msg = "";
-                            break;
-                    }
-
                     if (msg != "")
                     {
                         ArraySegment<byte> bytesToSend =
@@ -75,7 +69,8 @@ namespace desktop_app
                         await ws.SendAsync(bytesToSend, WebSocketMessageType.Text,
                                             true, source.Token);
                     }
-                    
+                    msg = "";
+
                     //Receive buffer
                     var receiveBuffer = new byte[128];
                     //Multipacket response
@@ -87,8 +82,6 @@ namespace desktop_app
                                     new ArraySegment<byte>(receiveBuffer, offset, dataPerPacket);
                         WebSocketReceiveResult result = await ws.ReceiveAsync(bytesReceived,
                                                                         source.Token);
-                        //Partial data received
-                        //Console.WriteLine("Data:{0}", Encoding.UTF8.GetString(receiveBuffer, offset,result.Count));
                         offset += result.Count;
                         if (result.EndOfMessage)
                             break;
@@ -99,7 +92,7 @@ namespace desktop_app
                     String server_prompt = response[0];
                     String server_data = "";
                     if (response.Length == 2) { server_data = response[1]; }
-                    Console.WriteLine("Complete response: {0}", server_prompt);
+                    //Console.WriteLine("Complete response: {0}", server_prompt);
 
                     switch (server_prompt)
                     {
@@ -114,6 +107,11 @@ namespace desktop_app
                             // close lobby, move to tutorial
                             appstatus = TUTORIAL;
                             this.switchto(this.tutorialXAML);
+                            this.showtutorial();
+                            break;
+                        case "TUTORIALSKIP":
+                            // if in tutorial, skip tutorial and move to intro
+                            if (appstatus == TUTORIAL) { this.endtutorial(); }
                             break;
                         default:
                             break;
@@ -122,19 +120,47 @@ namespace desktop_app
             }
         }
 
+        private void showtutorial()
+        {
+            this.tutorialPlayer.MediaEnded += this.tutorialended;
+            this.tutorialPlayer.Play();
+        }
+
+        private void tutorialended(object sender, EventArgs e)
+        {
+            this.endtutorial();
+        }
+
+        private void endtutorial()
+        {
+            this.tutorialPlayer.Stop();
+            // ending sequence of tutorial, also at end of skipping
+            // show intro to first round
+            appstatus = INTRO;
+            this.switchto(this.introXAML);
+            this.introPlayer.MediaEnded += this.startroundone;
+            this.introPlayer.Play();
+        }
+
+        private void startroundone(object sender, EventArgs e)
+        {
+            appstatus = WRITING;
+            msg = "WRITINGSTART."+this.tbgamecode.Text;
+            this.switchto(this.writingXAML);
+        }
+
         private void addplayer(string data)
         {
             // display the player in the lobby
             String[] nameandnumber = data.Split('&');
-            Console.WriteLine("player joined!!!!");
-            Console.WriteLine(nameandnumber[1]);
+            Console.WriteLine("Player {0} joined",nameandnumber[1]);
             ((TextBlock)this.players.Children[Int32.Parse(nameandnumber[1])-1]).Text = nameandnumber[0];
 
         }
 
         private void recieved_code(string data)
         {
-            Console.WriteLine("Recieved game code" + data);
+            Console.WriteLine("Recieved room code {0}",data);
             this.tbgamecode.Text = data;
             appstatus = LOBBY;
             this.switchto(this.lobbyXAML);

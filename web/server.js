@@ -5,6 +5,8 @@ let server = require('http').createServer();
 let app = require('./express_server.js');
 
 var opengames = require('./games.js');
+var show = require('./utils.js');
+var pages = require('./importpages.js');
 
 const port = process.env.PORT || 1337
 
@@ -18,10 +20,11 @@ server.on('request', app);
 
 // define commands (request/response codes etc)
 var commands = {
-    ["CODE_REQ"]: process_code_req
+    ["CODE_REQ"]: process_code_req,
+    ["WRITINGSTART"]: writingstart
 }
 
-function process_code_req(conn) {
+function process_code_req(conn, data) {
     let gamecode = "AAAA";
     console.log("Created new game:", gamecode);
     conn.send("CODE_RESP." + gamecode);
@@ -33,27 +36,37 @@ function process_code_req(conn) {
     };
 }
 
+function writingstart(conn, data) {
+    console.log("writing has started, send input pages!");
+    Object.keys(opengames[data].players).forEach((p) => {
+        show(pages.writing1, data, p);
+    });
+}
+
 wss.on('connection', function connection(ws) {
 
     ws.on('message', function incoming(message) {
 
         console.log(`received: ${message}`);
+        var promptdata = message.split('.');
+        if (promptdata.length == 1) {
+            promptdata.push('');
+        }
 
-        if (message in commands) {
-            commands[message](ws);
+        if (promptdata[0] in commands) {
+            console.log(promptdata[1]);
+            commands[promptdata[0]](ws, promptdata[1]);
         }
 
     });
 });
 
 server.listen(port, function () {
-
     console.log(`http/ws server listening on ${port}`);
 });
 
 setInterval(() => {
-    console.log("ping");
     wss.clients.forEach((client) => {
         client.send(new Date().toTimeString());
     });
-}, 10 * 1000);
+}, 1000);
