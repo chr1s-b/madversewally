@@ -36,6 +36,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="index.html" />
+    <Content Include="pages\leadertutorial.html" />
+    <Content Include="pages\leaderlobby.html" />
+    <Content Include="pages\tutorial.html" />
     <Content Include="public\css\style.css" />
     <Content Include="importpages.js">
       <SubType>Code</SubType>
@@ -43,6 +46,9 @@
     <Content Include="public\index.html" />
     <Content Include="pages\lobby.html" />
     <Content Include="pages\frame.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="public\js\sseutils.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="server.js" />
@@ -53,6 +59,7 @@
     <Folder Include="pages\" />
     <Folder Include="public\" />
     <Folder Include="public\css\" />
+    <Folder Include="public\js\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>

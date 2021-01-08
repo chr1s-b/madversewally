@@ -22,9 +22,14 @@ namespace desktop_app
     /// </summary>
     public partial class MainWindow : Window
     {
-        const int MAIN_MENU = 0;
+        const int MENU = 0;
         const int LOBBY = 1;
-        int appstatus = MAIN_MENU;
+        const int TUTORIAL = 2;
+        const int WRITING = 3;
+        const int RAPPING = 4;
+        const int INTER = 5;
+        const int END = 6;
+        int appstatus = MENU;
         String msg;
 
         String server_addr;
@@ -55,7 +60,7 @@ namespace desktop_app
                 {
                     switch (appstatus)
                     {
-                        case MAIN_MENU:
+                        case MENU:
                             msg = "CODE_REQ";
                             break;
                         default:
@@ -104,6 +109,12 @@ namespace desktop_app
                         case "PLAYERJOIN":
                             // add player
                             this.addplayer(server_data);
+                            break;
+                        case "TUTORIALSTART":
+                            // close lobby, move to tutorial
+                            appstatus = TUTORIAL;
+                            this.lobbyelements.Visibility = Visibility.Collapsed;
+                            this.tutorial.Visibility = Visibility.Visible;
                             break;
                         default:
                             break;

@@ -19,12 +19,17 @@ app.get('/event_updates/:gamecode/:playername', function (req, res) {
         'Cache-Control': 'no-cache',
         'Connection': 'keep-alive'
     });
-    // need to identify player name somehow?
-    if (!req.params.playername) { return res.end("invalid request"); }
-    opengames[req.params.gamecode][req.params.playername].conn = res;
 
-    res.write(`data: ${pages.lobby}\n\n`);
-    res.write(`data: hello your name is ${req.params.playername} and you are in ${req.params.gamecode}\n\n`);
+    if (!req.params.playername) { return res.end("invalid request"); }
+    // store connection with player
+    opengames[req.params.gamecode].players[req.params.playername].conn = res;
+
+    if (opengames[req.params.gamecode].players[req.params.playername].leader) {
+        show(pages.leaderlobby, req.params.gamecode, req.params.playername);
+        return;
+    }
+    show(pages.lobby, req.params.gamecode, req.params.playername);
+    return;
 });
 
 app.get('/', function (req, res) {
@@ -32,11 +37,9 @@ app.get('/', function (req, res) {
 });
 
 app.post('/', function (req, res) {
-
     var gamecode = req.body.txtCodeJoin.toUpperCase();
     var playername = req.body.txtPlayerName.toLowerCase();
     console.log(playername, "attempting to join", gamecode);
-    console.log(opengames);
     if (!(gamecode in opengames)) {
         // game does not exist
         return res.end("game doesnt exist");
@@ -44,7 +47,7 @@ app.post('/', function (req, res) {
     // game exists, add player to game
     var room = opengames[gamecode];
     // check player doesn't already exist
-    if (playername in room) {
+    if (playername in room.players) {
         // player already in, is it the same user?
         // TO DO
         return res.end("player already exists, choose another name");
@@ -56,7 +59,8 @@ app.post('/', function (req, res) {
     }
     // enough capacity, so add the player to the game
     room.numplayers += 1;
-    room[playername] = newplayer(res, room.numplayers == 1); // just store a score TODO add other properties
+    room.players[playername] = newplayer(res, room.numplayers == 1); // just store a score TODO add other properties
+    console.log(opengames);
     // tell the host a player has joined
     room.conn.send("PLAYERJOIN." + playername + "&" + room.numplayers.toString());
 
@@ -64,6 +68,25 @@ app.post('/', function (req, res) {
     res.write(`${pages.frame.replace("{{ name }}",playername).replace("{{ gamecode }}",gamecode)}`)
     return res.end();
 });
+
+app.post('/gamestart', function (req, res) {
+    var room = req.body.room;
+    var player = req.body.player;
+    if (opengames[room].players[player].leader) {
+        // can only start if room leader (means u can't rly start another room by chance)
+        // switch leader to skip tutorial page
+        show(pages.leadertutorial, room, player);
+        // move all players to a new screen by sse
+        Object.keys(opengames[room].players).forEach((p) => {
+            // don't redirect lead player
+            if (p !== player) { show(pages.tutorial, room, p); }
+        });
+        // tell host to play tutorial
+        opengames[room].conn.send("TUTORIALSTART")
+        console.log("starting tutorial, closing lobby")
+    }
+});
+
 
 function newplayer(conn, leader) {
     // create new player object
@@ -73,6 +96,11 @@ function newplayer(conn, leader) {
         profile: "", // TODO
         score: 0
     };
+}
+
+function show(page, room, player) {
+    opengames[room].players[player].conn.write(`data: ${Buffer.from(page.replace("{{ player }}", player).replace("{{ room }}", room)).toString('base64')}\n\n`);
+    return;
 }
 
 module.exports = app;

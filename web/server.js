@@ -26,7 +26,11 @@ function process_code_req(conn) {
     console.log("Created new game:", gamecode);
     conn.send("CODE_RESP." + gamecode);
     // add game to opengames
-    opengames[gamecode] = {conn: conn, numplayers: 0};
+    opengames[gamecode] = {
+        conn: conn,
+        numplayers: 0,
+        players: {}
+    };
 }
 
 wss.on('connection', function connection(ws) {
@@ -48,7 +52,7 @@ server.listen(port, function () {
 });
 
 setInterval(() => {
-    console.log("ping", JSON.stringify(wss.clients), "clients");
+    console.log("ping");
     wss.clients.forEach((client) => {
         client.send(new Date().toTimeString());
     });

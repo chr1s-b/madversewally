@@ -25,5 +25,8 @@
                 <TextBlock x:Name="player8" HorizontalAlignment="Left" Height="22" Margin="663,282,0,0" TextWrapping="NoWrap" Text="8" VerticalAlignment="Top" Width="92"/>
             </Grid>
         </Grid>
+        <Grid x:Name="tutorial" Visibility="Collapsed">
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="35" Margin="332,122,0,0" TextWrapping="Wrap" Text="Tutorial" VerticalAlignment="Top" Width="97"/>
+        </Grid>
     </Grid>
 </Window>
