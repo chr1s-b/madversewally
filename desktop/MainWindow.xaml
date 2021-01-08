@@ -6,9 +6,11 @@
         xmlns:local="clr-namespace:desktop_app"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button x:Name="connect_button" Content="Connect" HorizontalAlignment="Left" Height="47" Margin="308,188,0,0" VerticalAlignment="Top" Width="150" Click="connect_button_Click"/>
-        <Grid x:Name="lobbyelements" Visibility="Collapsed">
+    <Grid x:Name="container">
+        <Grid x:Name="menuXAML" Visibility="Visible">
+            <Button x:Name="connect_button" Content="Connect" HorizontalAlignment="Left" Height="47" Margin="308,188,0,0" VerticalAlignment="Top" Width="150" Click="connect_button_Click"/>
+        </Grid>
+        <Grid x:Name="lobbyXAML" Visibility="Collapsed">
             <TextBlock x:Name="tbgamecode" HorizontalAlignment="Left" Height="24" Margin="696,19,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="59"/>
             <TextBlock x:Name="tbjoinat" HorizontalAlignment="Left" Height="24" Margin="451,19,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="135"/>
             <TextBlock x:Name="tbjoinat_label" HorizontalAlignment="Left" Height="24" Margin="409,19,0,0" TextWrapping="Wrap" Text="Join at:" VerticalAlignment="Top" Width="42"/>
@@ -25,7 +27,7 @@
                 <TextBlock x:Name="player8" HorizontalAlignment="Left" Height="22" Margin="663,282,0,0" TextWrapping="NoWrap" Text="8" VerticalAlignment="Top" Width="92"/>
             </Grid>
         </Grid>
-        <Grid x:Name="tutorial" Visibility="Collapsed">
+        <Grid x:Name="tutorialXAML" Visibility="Collapsed">
             <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="35" Margin="332,122,0,0" TextWrapping="Wrap" Text="Tutorial" VerticalAlignment="Top" Width="97"/>
         </Grid>
     </Grid>

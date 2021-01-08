@@ -113,8 +113,7 @@ namespace desktop_app
                         case "TUTORIALSTART":
                             // close lobby, move to tutorial
                             appstatus = TUTORIAL;
-                            this.lobbyelements.Visibility = Visibility.Collapsed;
-                            this.tutorial.Visibility = Visibility.Visible;
+                            this.switchto(this.tutorialXAML);
                             break;
                         default:
                             break;
@@ -138,10 +137,21 @@ namespace desktop_app
             Console.WriteLine("Recieved game code" + data);
             this.tbgamecode.Text = data;
             appstatus = LOBBY;
-            this.lobbyelements.Visibility = Visibility.Visible;
-            // now displayed game code to user
-            // remove connect button
-            this.connect_button.Visibility = Visibility.Collapsed;
+            this.switchto(this.lobbyXAML);
+        }
+
+        private void switchto(Grid makevisible)
+        {
+            foreach (Grid grid in this.container.Children)
+            {
+                if (grid == makevisible)
+                {
+                    grid.Visibility = Visibility.Visible;
+                } else
+                {
+                    grid.Visibility = Visibility.Collapsed;
+                }
+            }
         }
 
         private void code_textbox_TextChanged(object sender, TextChangedEventArgs e)
